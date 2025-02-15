@@ -1,36 +1,42 @@
 import 'package:email_validator/email_validator.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:quiz_app/domain/constant/assets.dart';
 import 'package:quiz_app/domain/constant/ui_helper.dart';
-import 'package:quiz_app/pages/login/widgets/login_header_text.dart';
-import 'package:quiz_app/pages/signup/sign_up_screen.dart';
+import 'package:quiz_app/pages/widgets/custom_backbutton.dart';
 import 'package:quiz_app/pages/widgets/custom_button.dart';
 import 'package:quiz_app/pages/widgets/custom_text_field.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class SignUpScreen extends StatefulWidget {
+  const SignUpScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<SignUpScreen> createState() => _SignUpScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _SignUpScreenState extends State<SignUpScreen> {
   // TextControllers to capture user input for email and password.
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  TextEditingController confirmPasswordController = TextEditingController();
 
   //declared global key
-  final GlobalKey<FormBuilderState> _loginFormKey =
+  final GlobalKey<FormBuilderState> _signUpFormKey =
       GlobalKey<FormBuilderState>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        leading: CustomBackbutton(
+          onTap: () {
+            Navigator.pop(context);
+          },
+        ),
+      ),
       body: SafeArea(
         child: FormBuilder(
-          key: _loginFormKey, //login form key
+          key: _signUpFormKey, //login form key
           child: SingleChildScrollView(
             child: GestureDetector(
               onTap: () {
@@ -41,20 +47,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 mainAxisAlignment: MainAxisAlignment
                     .start, // Align the children widgets to the top.
                 children: [
-                  const SizedBox(
-                    height: 20,
-                  ),
-
-                  // Custom widget for login screen header.
-                  const LoginHeaderText(),
-
-                  const SizedBox(
-                    height: 30,
-                  ),
-
                   // Displays the login screen image.
                   UiHelper.assetsImage(
-                    image: Assets.login,
+                    image: Assets.signup,
                     height: 200,
                     boxFit: BoxFit.cover,
                   ),
@@ -87,7 +82,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   //custom text field
                   CustomTextField(
                     isPasswordField: true, // Marks this as a password field.
-                    bottomMargin: 10, // Adds margin below the password field.
+                    bottomMargin: 20, // Adds margin below the password field.
                     controller:
                         passwordController, // Controller to manage password input.
                     fieldName: "Password", // Field name for reference.
@@ -105,24 +100,25 @@ class _LoginScreenState extends State<LoginScreen> {
                       }
                     },
                   ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 20,
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        InkWell(
-                          child: UiHelper.customText(
-                            text: "Forget Password?", // Text for the link.
-                            color: Colors.deepPurple, // Color of the link text.
-                            fontSize: 15, // Font size for the text.
-                            fontWeight:
-                                FontWeight.w600, // Font weight for the text.
-                          ),
-                        )
-                      ],
-                    ),
+                  CustomTextField(
+                    isPasswordField: true, // Marks this as a password field.
+                    bottomMargin: 10, // Adds margin below the password field.
+                    controller:
+                        confirmPasswordController, // Controller to manage password input.
+                    fieldName: "Confirm Password", // Field name for reference.
+                    title:
+                        "Confirm Password", // Title displayed above the password field.
+                    hintText:
+                        "Enter confirm  password", // Hint text inside the password field.
+                    icon: Icons.password, // Icon inside the password field.
+                    validator: (value) {
+                      // Password validation logic.
+                      if (value == null || value.isEmpty) {
+                        return "Confirm password can't be empty";
+                      } else {
+                        return null; // Return null if password is valid.
+                      }
+                    },
                   ),
 
                   //custom login button
@@ -130,42 +126,12 @@ class _LoginScreenState extends State<LoginScreen> {
                     onTap: () {
                       FocusScope.of(context).unfocus();
 
-                      if (_loginFormKey.currentState!.saveAndValidate()) {}
+                      if (_signUpFormKey.currentState!.saveAndValidate()) {}
                     },
                     horizontalMargin: 40,
-                    btnName: "Login",
+                    btnName: "Sign Up",
                     btnColor: Colors.deepPurple,
                   ),
-
-                  //linl to go signup screen
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      UiHelper.customText(
-                        text: "Don't have an account?",
-                        fontSize: 15,
-                      ),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            CupertinoPageRoute(
-                              builder: (context) => const SignUpScreen(),
-                            ),
-                          );
-                        },
-                        child: UiHelper.customText(
-                          text: "Sign Up",
-                          fontSize: 18,
-                          color: Colors.deepPurple,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      )
-                    ],
-                  )
                 ],
               ),
             ),
