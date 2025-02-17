@@ -38,6 +38,9 @@ dependencies:
   flutter_form_builder:
   email_validator:
   fluttertoast:
+  firebase_core:
+  cloud_firestore:
+  firebase_auth:
 
 dev_dependencies:
   flutter_test:
