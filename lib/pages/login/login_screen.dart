@@ -2,6 +2,7 @@ import 'package:email_validator/email_validator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:quiz_app/domain/constant/assets.dart';
 import 'package:quiz_app/domain/constant/ui_helper.dart';
 import 'package:quiz_app/pages/login/widgets/login_header_text.dart';
@@ -130,7 +131,13 @@ class _LoginScreenState extends State<LoginScreen> {
                     onTap: () {
                       FocusScope.of(context).unfocus();
 
-                      if (_loginFormKey.currentState!.saveAndValidate()) {}
+                      if (_loginFormKey.currentState!.saveAndValidate()) {
+                        Fluttertoast.cancel();
+                        UiHelper.customToastMsg(
+                            tostMsg: "Success",
+                            color: Colors.green,
+                            textColor: Colors.white);
+                      }
                     },
                     horizontalMargin: 40,
                     btnName: "Login",

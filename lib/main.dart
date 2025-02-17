@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:quiz_app/pages/login/login_screen.dart';
+import 'package:quiz_app/pages/bottomNavBar/bottom_nav_bar.dart';
 
 void main() {
   runApp(const MyApp());
@@ -10,7 +10,10 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        title: 'Quiz App', theme: ThemeData(), home: const LoginScreen());
+    return const MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Quiz App',
+      home: BottomNavBar(),
+    );
   }
 }
