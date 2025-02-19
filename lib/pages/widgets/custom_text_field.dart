@@ -4,7 +4,7 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 
 class CustomTextField extends StatefulWidget {
   final String fieldName;
-  final String title;
+  final String? title;
   final String hintText;
   final TextEditingController? controller;
   final IconData icon;
@@ -17,7 +17,7 @@ class CustomTextField extends StatefulWidget {
   const CustomTextField({
     super.key,
     required this.fieldName,
-    required this.title,
+    this.title,
     required this.hintText,
     this.controller,
     required this.icon,
@@ -45,7 +45,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            widget.title,
+            "${widget.title}",
             style: const TextStyle(
               color: Colors.black,
               fontWeight: FontWeight.bold,
