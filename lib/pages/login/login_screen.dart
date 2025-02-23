@@ -9,8 +9,8 @@ import 'package:quiz_app/domain/constant/ui_helper.dart';
 import 'package:quiz_app/data/repository/reset_password_repository.dart';
 import 'package:quiz_app/data/repository/user_auth_repository.dart';
 import 'package:quiz_app/pages/bottomNavBar/bottom_nav_bar.dart';
-import 'package:quiz_app/pages/fotgot%20password/bloc/forgot_password_bloc.dart';
-import 'package:quiz_app/pages/fotgot%20password/otp_send.dart';
+import 'package:quiz_app/pages/fotgotpassword/bloc/forgot_password_bloc.dart';
+import 'package:quiz_app/pages/fotgotpassword/forgot_password_Screen.dart';
 import 'package:quiz_app/pages/login/bloc/auth_bloc.dart';
 import 'package:quiz_app/pages/login/widgets/login_header_text.dart';
 import 'package:quiz_app/pages/signup/sign_up_screen.dart';
@@ -164,7 +164,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     create: (context) => ForgotPasswordBloc(
                                         resetPasswordRepository: context
                                             .read<ResetPasswordRepository>()),
-                                    child: const OtpSend(),
+                                    child: const ForgotPasswordScreen(),
                                   ),
                                 ),
                               );

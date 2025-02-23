@@ -39,12 +39,13 @@ class UiHelper {
   static customToastMsg(
       {required String tostMsg,
       required Color color,
+      ToastGravity? toastGravity,
       required,
       required Color textColor}) {
     return Fluttertoast.showToast(
       msg: tostMsg,
       toastLength: Toast.LENGTH_SHORT,
-      gravity: ToastGravity.BOTTOM,
+      gravity: toastGravity ?? ToastGravity.BOTTOM,
       timeInSecForIosWeb: 1,
       backgroundColor: color,
       textColor: textColor,

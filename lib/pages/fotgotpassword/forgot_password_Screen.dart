@@ -6,7 +6,7 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:quiz_app/domain/constant/assets.dart';
 import 'package:quiz_app/domain/constant/ui_helper.dart';
-import 'package:quiz_app/pages/fotgot%20password/bloc/forgot_password_bloc.dart';
+import 'package:quiz_app/pages/fotgotpassword/bloc/forgot_password_bloc.dart';
 import 'package:quiz_app/pages/widgets/custom_backbutton.dart';
 import 'package:quiz_app/pages/widgets/custom_button.dart';
 import 'package:quiz_app/pages/widgets/custom_text_field.dart';

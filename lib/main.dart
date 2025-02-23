@@ -5,7 +5,7 @@ import 'package:quiz_app/data/repository/reset_password_repository.dart';
 import 'package:quiz_app/data/repository/user_auth_repository.dart';
 import 'package:quiz_app/firebase_options.dart';
 import 'package:quiz_app/pages/login/bloc/auth_bloc.dart';
-import 'package:quiz_app/pages/login/login_screen.dart';
+import 'package:quiz_app/pages/splash/splash_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
         RepositoryProvider(
           create: (context) => UserAuthRepository(),
         ),
-         RepositoryProvider(
+        RepositoryProvider(
           create: (context) => ResetPasswordRepository(),
         ),
       ],
@@ -39,7 +39,7 @@ class MyApp extends StatelessWidget {
         home: BlocProvider(
           create: (context) =>
               AuthBloc(userAuthRepository: context.read<UserAuthRepository>()),
-          child: const LoginScreen(),
+          child: const SplashScreen(),
         ),
       ),
     );

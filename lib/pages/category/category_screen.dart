@@ -1,6 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:quiz_app/domain/constant/ui_helper.dart';
 import 'package:quiz_app/model.dart/category_model.dart';
+import 'package:quiz_app/pages/quiz/quiz_screen.dart';
 
 class CategoryScreen extends StatefulWidget {
   const CategoryScreen({super.key});
@@ -18,6 +20,9 @@ class _CategoryScreenState extends State<CategoryScreen> {
     Colors.orange,
     Colors.deepPurple,
     Colors.green,
+    Colors.deepOrange,
+    Colors.amberAccent,
+    Colors.pinkAccent
   ];
   @override
   Widget build(BuildContext context) {
@@ -36,7 +41,13 @@ class _CategoryScreenState extends State<CategoryScreen> {
           itemBuilder: (context, index) {
             return InkWell(
               onTap: () {
-                // Navigator.push(context, CupertinoPageRoute(builder:(context) => ,))
+                Navigator.push(
+                  context,
+                  CupertinoPageRoute(
+                    builder: (context) =>
+                        QuizScreen(category: categoryList[index].name),
+                  ),
+                );
               },
               child: Padding(
                 padding: const EdgeInsets.all(5),
