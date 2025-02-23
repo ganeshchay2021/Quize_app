@@ -48,4 +48,15 @@ class UserAuthRepository {
       return Left(e.toString());
     }
   }
+
+  Future<Either<String, void>> logout() async {
+    try {
+      await FirebaseAuth.instance.signOut();
+      return const Right(null);
+    } on FirebaseAuthException catch (_) {
+      return const Left("Invalid email and password");
+    } catch (e) {
+      return Left(e.toString());
+    }
+  }
 }

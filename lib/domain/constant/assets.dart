@@ -13,4 +13,6 @@ class Assets {
   static String gk = "assets/images/gk.png";
   static String reactJs = "assets/images/react js.png";
   static String nepalDriveL = "assets/images/Nepal Driving.png";
+  static String profile = "assets/images/profile.jpg";
+
 }

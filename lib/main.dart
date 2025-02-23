@@ -30,16 +30,15 @@ class MyApp extends StatelessWidget {
           create: (context) => ResetPasswordRepository(),
         ),
       ],
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'Quiz App',
-        theme: ThemeData(
-            scaffoldBackgroundColor: Colors.white,
-            appBarTheme: const AppBarTheme(backgroundColor: Colors.white)),
-        home: BlocProvider(
-          create: (context) =>
-              AuthBloc(userAuthRepository: context.read<UserAuthRepository>()),
-          child: const SplashScreen(),
+      child: BlocProvider(
+        create: (context) => AuthBloc(userAuthRepository: context.read<UserAuthRepository>()),
+        child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'Quiz App',
+          theme: ThemeData(
+              scaffoldBackgroundColor: Colors.white,
+              appBarTheme: const AppBarTheme(backgroundColor: Colors.white)),
+          home: const SplashScreen(),
         ),
       ),
     );

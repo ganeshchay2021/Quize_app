@@ -1,9 +1,11 @@
 import 'package:email_validator/email_validator.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:quiz_app/domain/constant/assets.dart';
 import 'package:quiz_app/domain/constant/ui_helper.dart';
+import 'package:quiz_app/pages/bottomNavBar/bottom_nav_bar.dart';
 import 'package:quiz_app/pages/login/bloc/auth_bloc.dart';
 import 'package:quiz_app/pages/widgets/custom_backbutton.dart';
 import 'package:quiz_app/pages/widgets/custom_button.dart';
@@ -64,6 +66,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               }
 
               if (state is AuthSuccessState) {
+                Navigator.pushReplacement(context, CupertinoPageRoute(builder:(context) => const BottomNavBar(),));
                 UiHelper.customToastMsg(
                     tostMsg: "Welcome to the dashboard",
                     color: Colors.green,

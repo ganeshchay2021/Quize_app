@@ -1,10 +1,15 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:quiz_app/pages/category/category_screen.dart';
 import 'package:quiz_app/pages/leaderboard/leaderboard_screen.dart';
 import 'package:quiz_app/pages/profile/profile_screen.dart';
 
 class BottomNavBar extends StatefulWidget {
-  const BottomNavBar({super.key});
+  final int initiIndex;
+  const BottomNavBar({
+    super.key,
+    this.initiIndex = 0,
+  });
 
   @override
   State<BottomNavBar> createState() => _BottomNavBarState();
@@ -16,7 +21,13 @@ class _BottomNavBarState extends State<BottomNavBar> {
     LeaderboardScreen(),
     ProfileScreen()
   ];
-  int selectedIndex = 0;
+  late int selectedIndex;
+  @override
+  void initState() {
+    selectedIndex = widget.initiIndex;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

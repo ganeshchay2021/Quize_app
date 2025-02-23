@@ -2,10 +2,10 @@ import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:quiz_app/domain/constant/ui_helper.dart';
+import 'package:quiz_app/pages/result/result_screen.dart';
 import 'package:quiz_app/pages/widgets/custom_backbutton.dart';
 import 'package:quiz_app/pages/widgets/custom_button.dart';
 
@@ -95,8 +95,8 @@ class _QuizScreenState extends State<QuizScreen> {
         currentIndex++;
       });
     } else {
-      await _updateUserScore();
-      // Navigator.pushReplacement(context, CupertinoPageRoute(builder:(context) => ResultScreen(),));
+      // await _updateUserScore();
+      Navigator.pushReplacement(context, CupertinoPageRoute(builder:(context) => ResultScreen(score: score, totalQuestion: question.length,),));
     }
   }
 
@@ -104,7 +104,8 @@ class _QuizScreenState extends State<QuizScreen> {
     var user = FirebaseAuth.instance.currentUser;
     if (user == null) {
       return;
-    }
+    }  
+
 
     try {
       var userRef =
@@ -112,9 +113,9 @@ class _QuizScreenState extends State<QuizScreen> {
       await FirebaseFirestore.instance.runTransaction((transaction) async {
         var snapshot = await transaction.get(userRef);
 
-        if (!snapshot.exists) {
+        if (snapshot.exists) {
           int existingScore = snapshot["score"] ?? 0;
-          transaction.update(userRef, {"score": existingScore + 1});
+          transaction.update(userRef, {"score": existingScore + score});
         }
       });
     } catch (e) {
@@ -141,67 +142,68 @@ class _QuizScreenState extends State<QuizScreen> {
 
     if (question.isNotEmpty) {
       return Scaffold(
-          appBar: _buildAppBar(),
-          body: Padding(
-            padding: const EdgeInsets.all(18),
-            child: Column(
-              children: [
-                LinearProgressIndicator(
-                  value: (currentIndex + 1) / question.length,
-                  color: Colors.green,
-                  minHeight: 8,
+        appBar: _buildAppBar(),
+        body: Padding(
+          padding: const EdgeInsets.all(18),
+          child: Column(
+            children: [
+              LinearProgressIndicator(
+                value: (currentIndex + 1) / question.length,
+                color: Colors.green,
+                minHeight: 8,
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              Container(
+                padding: const EdgeInsets.all(15),
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: Colors.deepPurple.shade50,
+                  borderRadius: BorderRadius.circular(12),
+                  boxShadow: [
+                    BoxShadow(
+                        color: Colors.grey.shade300,
+                        blurRadius: 10,
+                        offset: const Offset(0, 4))
+                  ],
                 ),
-                const SizedBox(
-                  height: 20,
+                child: UiHelper.customText(
+                  text: "${question[currentIndex]["questionsText"]}",
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                  textAlign: TextAlign.center,
+                  color: Colors.deepPurple,
                 ),
-                Container(
-                  padding: const EdgeInsets.all(15),
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    color: Colors.deepPurple.shade50,
-                    borderRadius: BorderRadius.circular(12),
-                    boxShadow: [
-                      BoxShadow(
-                          color: Colors.grey.shade300,
-                          blurRadius: 10,
-                          offset: const Offset(0, 4))
-                    ],
-                  ),
-                  child: UiHelper.customText(
-                    text: "${question[currentIndex]["questionsText"]}",
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                    textAlign: TextAlign.center,
-                    color: Colors.deepPurple,
-                  ),
-                ),
-                const SizedBox(
-                  height: 25,
-                ),
-                Expanded(
-                  child: ListView.separated(
-                      itemBuilder: (context, index) {
-                        return _buildOption(index);
-                      },
-                      separatorBuilder: (_, __) {
-                        return const SizedBox(
-                          height: 10,
-                        );
-                      },
-                      itemCount: question[currentIndex]["options"].length),
-                ),
-                //condition render next and finish buttton
-                if (hasAnswered)
-                  CustomButton(
-                      btnName: currentIndex == question.length - 1
-                          ? "Finish"
-                          : "Next",
-                      btnColor: Colors.deepPurple,
-                      horizontalMargin: 100,
-                      onTap: _nextQuestion)
-              ],
-            ),
-          ));
+              ),
+              const SizedBox(
+                height: 30,
+              ),
+              Expanded(
+                child: ListView.separated(
+                    itemBuilder: (context, index) {
+                      return _buildOption(index);
+                    },
+                    separatorBuilder: (_, __) {
+                      return const SizedBox(
+                        height: 18,
+                      );
+                    },
+                    itemCount: question[currentIndex]["options"].length),
+              ),
+              //condition render next and finish buttton
+              if (hasAnswered)
+                CustomButton(
+                    btnName:
+                        currentIndex == question.length - 1 ? "Finish" : "Next",
+                    btnColor: Colors.deepPurple,
+                    horizontalMargin: 100,
+                    onTap: _nextQuestion)
+                    , const SizedBox(height: 200,),
+            ],
+          ),
+        ),
+      );
     }
 
     if (question.isEmpty) {

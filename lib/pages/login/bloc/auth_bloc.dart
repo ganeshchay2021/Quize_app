@@ -41,5 +41,19 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         );
       },
     );
+
+    on<LogoutEvent>(
+      transformer: droppable(),
+      (event, emit) async {
+        emit(AuthLoadingState());
+        final result = await userAuthRepository.logout();
+        result.fold(
+          (error) => emit(AuthErrorState(errorMsg: error)),
+          (_) => emit(
+            AuthSuccessState(),
+          ),
+        );
+      },
+    );
   }
 }
