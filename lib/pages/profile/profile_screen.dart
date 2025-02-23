@@ -120,12 +120,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             height: 20,
                           ),
                           UiHelper.customText(
-                            text: "Ganesh Chaudhary",
+                            text: userData!["name"],
                             fontSize: 20,
                             fontWeight: FontWeight.w600,
                           ),
                           const SizedBox(
-                            height: 10,
+                            height: 5,
+                          ),
+                          UiHelper.customText(
+                            text: userData!["email"],
+                            fontStyle: FontStyle.italic,
+                            fontSize: 15,
+                            color: Colors.deepPurple,
+                            fontWeight: FontWeight.w400,
                           ),
                           CustomButton(
                             btnName: "Sign Out",
@@ -159,6 +166,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         btnColor: Colors.deepPurple.shade300,
                                         horizontalMargin: 10,
                                         onTap: () {
+                                          context
+                                              .read<AuthBloc>()
+                                              .add(LogoutEvent());
                                           Navigator.pushAndRemoveUntil(
                                             context,
                                             CupertinoPageRoute(

@@ -1,5 +1,4 @@
 import 'package:email_validator/email_validator.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
@@ -58,10 +57,13 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
           if (state is ForgotPasswordSuccessState) {
             Navigator.pop(context);
             UiHelper.customToastMsg(
+              fontSize: 16,
+              toastGravity: ToastGravity.CENTER,
               tostMsg:
                   "A reset password link send to the email,\nplease check your email.",
-              color: Colors.deepPurple,
-              textColor: Colors.green,
+              color: Colors.green,
+              
+              textColor: Colors.white,
             );
           }
         },

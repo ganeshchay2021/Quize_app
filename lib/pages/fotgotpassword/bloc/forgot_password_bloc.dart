@@ -14,7 +14,7 @@ class ForgotPasswordBloc
       : super(ForgotPasswordInitialState()) {
     on<SendResetPassLinkToEmail>((event, emit) async {
       emit(ForgotPasswordLoadingState());
-      final result = await resetPasswordRepository.sentOtp(email: event.email);
+      final result = await resetPasswordRepository.sentResetPasswordLink(email: event.email);
       result.fold(
         (error) => emit(ForgotPasswordErrorState(errorMsg: error)),
         (data) => emit(

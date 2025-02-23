@@ -10,12 +10,14 @@ class UiHelper {
       double? fontSize,
       FontWeight? fontWeight,
       TextAlign? textAlign,
+      FontStyle? fontStyle,
       Color? color,
       double? height}) {
     return Text(
       text,
       textAlign: textAlign,
       style: TextStyle(
+        fontStyle: fontStyle,
         height: height,
         fontSize: fontSize,
         color: color,
@@ -39,6 +41,7 @@ class UiHelper {
   static customToastMsg(
       {required String tostMsg,
       required Color color,
+      double? fontSize,
       ToastGravity? toastGravity,
       required,
       required Color textColor}) {
@@ -49,7 +52,7 @@ class UiHelper {
       timeInSecForIosWeb: 1,
       backgroundColor: color,
       textColor: textColor,
-      fontSize: 16.0,
+      fontSize: fontSize,
     );
   }
 }

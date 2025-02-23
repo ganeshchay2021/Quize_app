@@ -59,12 +59,12 @@ class _LoginScreenState extends State<LoginScreen> {
             }
 
             if (state is AuthSuccessState) {
-              Navigator.pushReplacement(
-                context,
-                CupertinoPageRoute(
-                  builder: (context) => const BottomNavBar(),
-                ),
-              );
+              Navigator.pushAndRemoveUntil(
+                  context,
+                  CupertinoPageRoute(
+                    builder: (context) => const BottomNavBar(),
+                  ),
+                  (route) => false);
               UiHelper.customToastMsg(
                   tostMsg: "Welcome to the dashboard",
                   color: Colors.green,
@@ -170,7 +170,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               );
                             },
                             child: UiHelper.customText(
-                              text: "Forget Password?", // Text for the link.
+                              text: "Forgot Password?", // Text for the link.
                               color:
                                   Colors.deepPurple, // Color of the link text.
                               fontSize: 15, // Font size for the text.

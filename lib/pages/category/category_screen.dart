@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:quiz_app/domain/constant/ui_helper.dart';
-import 'package:quiz_app/model.dart/category_model.dart';
+import 'package:quiz_app/model/category_model.dart';
 import 'package:quiz_app/pages/quiz/quiz_screen.dart';
 
 class CategoryScreen extends StatefulWidget {
