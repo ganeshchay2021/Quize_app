@@ -198,8 +198,6 @@ class _LoginScreenState extends State<LoginScreen> {
                         CustomButton(
                             onTap: () {
                               FocusScope.of(context).unfocus();
-                                emailController.clear();
-                                passwordController.clear();
                               if (_loginFormKey.currentState!
                                   .saveAndValidate()) {
                                 Fluttertoast.cancel();
@@ -229,7 +227,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         GestureDetector(
                           onTap: () {
                             emailController.clear();
-                                passwordController.clear();
+                            passwordController.clear();
                             Navigator.push(
                               context,
                               CupertinoPageRoute(

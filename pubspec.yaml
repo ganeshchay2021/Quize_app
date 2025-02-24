@@ -42,7 +42,6 @@ dependencies:
   cloud_functions:
   firebase_auth:
   image_picker:
-  shared_preferences:
   lottie:
   flutter_bloc:
   bloc:
@@ -51,6 +50,7 @@ dependencies:
   bloc_concurrency:
   loader_overlay:
   flutter_spinkit:
+  image:
 
 dev_dependencies:
   flutter_test:

@@ -14,5 +14,7 @@ class Assets {
   static String reactJs = "assets/images/react js.png";
   static String nepalDriveL = "assets/images/Nepal Driving.png";
   static String profile = "assets/images/profile.jpg";
+  static String leaderBoard = "assets/images/leaderboard.png";
+
 
 }
