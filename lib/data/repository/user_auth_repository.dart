@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:quiz_app/data/database/database_method.dart';
@@ -9,17 +12,20 @@ class UserAuthRepository {
   Future<Either<String, void>> signUp(
       {required String name,
       required String email,
-      required String password}) async {
+      required String password,
+      Uint8List? profileImage}) async {
     try {
       UserCredential userCredential = await _auth
           .createUserWithEmailAndPassword(email: email, password: password);
-
+      String? base65Image =
+          profileImage != null ? base64Encode(profileImage) : null;
       String id = userCredential.user!.uid;
       Map<String, dynamic> userInfo = {
         "uid": id,
         "score": 0,
         "name": name,
         "email": email,
+        "profile": base65Image
       };
 
       await DatabaseMethod().addUser(userInfo: userInfo, id: id);
