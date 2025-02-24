@@ -1,8 +1,13 @@
+import 'dart:convert';
+import 'dart:typed_data';
+import 'package:image/image.dart' as img;
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:quiz_app/domain/constant/ui_helper.dart';
 import 'package:quiz_app/pages/login/bloc/auth_bloc.dart';
 import 'package:quiz_app/pages/login/login_screen.dart';
@@ -21,6 +26,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Map<String, dynamic>? userData;
 
+  Uint8List? profileImageBytes;
+  bool imageLoading = false;
+
   Future<void> fetchUserData() async {
     if (user == null) return;
 
@@ -32,11 +40,62 @@ class _ProfileScreenState extends State<ProfileScreen> {
       if (documentSnapshot.exists) {
         setState(() {
           userData = documentSnapshot.data() as Map<String, dynamic>?;
+          if (userData?["profile"] != null) {
+            profileImageBytes = base64Decode(userData!["profile"]);
+          }
           isLoading = false;
         });
       }
     } catch (e) {
       debugPrint(e.toString());
+    }
+  }
+
+  Future<void> pickImageFromGallery() async {
+    final pickedFile =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      //convert the image into byte
+      final imageByte = await pickedFile.readAsBytes();
+
+      img.Image? image = img.decodeImage(imageByte);
+
+      if (image == null) {
+        return;
+      } else {
+        // Resize image to a specific size (e.g., width: 600px)
+        img.Image resizedImage = img.copyResize(image, width: 600);
+
+        // Compress the image (encode it to JPG with a quality of 80%)
+        Uint8List resizedImageBytes =
+            Uint8List.fromList(img.encodeJpg(resizedImage, quality: 80));
+
+        // Step 4: Upload image to Firebase Storage
+        await updateProfileImage(resizedImageBytes);
+      }
+    } else {
+      return;
+    }
+  }
+
+  Future<void> updateProfileImage(Uint8List imageByte) async {
+    if (user == null) return;
+
+    try {
+      String base64Image = base64Encode(imageByte);
+      await FirebaseFirestore.instance
+          .collection("userData")
+          .doc(user!.uid)
+          .set({"profile": base64Image}, SetOptions(merge: true));
+
+      setState(() {
+        profileImageBytes = imageByte;
+      });
+    } catch (e) {
+      debugPrint(
+        e.toString(),
+      );
     }
   }
 
@@ -97,21 +156,26 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const CircleAvatar(
-                            radius: 60,
-                            backgroundColor: Colors.deepPurple,
-                            backgroundImage: NetworkImage(
-                                    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSgu_nuqDR_pR2-10KbNon-YTUUEoNGJ9lR1A&s")
-                                as ImageProvider,
-                            child: Align(
-                              alignment: Alignment.bottomRight,
-                              child: CircleAvatar(
-                                backgroundColor: Colors.black,
-                                radius: 16,
-                                child: Icon(
-                                  Icons.camera_alt,
-                                  color: Colors.white,
-                                  size: 20,
+                          GestureDetector(
+                            onTap: pickImageFromGallery,
+                            child: CircleAvatar(
+                              radius: 60,
+                              backgroundColor: Colors.deepPurple,
+                              backgroundImage: profileImageBytes != null
+                                  ? MemoryImage(profileImageBytes!)
+                                  : const NetworkImage(
+                                          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSgu_nuqDR_pR2-10KbNon-YTUUEoNGJ9lR1A&s")
+                                      as ImageProvider,
+                              child: const Align(
+                                alignment: Alignment.bottomRight,
+                                child: CircleAvatar(
+                                  backgroundColor: Colors.black,
+                                  radius: 16,
+                                  child: Icon(
+                                    Icons.camera_alt,
+                                    color: Colors.white,
+                                    size: 20,
+                                  ),
                                 ),
                               ),
                             ),
@@ -120,7 +184,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             height: 20,
                           ),
                           UiHelper.customText(
-                            text: userData!["name"],
+                            text: userData?["name"],
                             fontSize: 20,
                             fontWeight: FontWeight.w600,
                           ),
@@ -128,9 +192,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             height: 5,
                           ),
                           UiHelper.customText(
-                            text: userData!["email"],
-                            fontStyle: FontStyle.italic,
-                            fontSize: 15,
+                            text: "Total Score: ${userData?["score"] * 1}",
+                            fontSize: 18,
                             color: Colors.deepPurple,
                             fontWeight: FontWeight.w400,
                           ),
