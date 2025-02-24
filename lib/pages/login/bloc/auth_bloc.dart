@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:bloc/bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:equatable/equatable.dart';
@@ -9,14 +11,16 @@ part 'auth_state.dart';
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final UserAuthRepository userAuthRepository;
   AuthBloc({required this.userAuthRepository}) : super(AuthInitialState()) {
-
     //event for signup
     on<SignInEvent>(
       transformer: droppable(),
       (event, emit) async {
         emit(AuthLoadingState());
         final result = await userAuthRepository.signUp(
-            name: event.name, email: event.email, password: event.passwrod);
+            name: event.name,
+            email: event.email,
+            password: event.passwrod,
+            profileImage: event.profileImage);
         result.fold(
           (error) => emit(AuthErrorState(errorMsg: error)),
           (_) => emit(

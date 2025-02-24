@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 part of 'auth_bloc.dart';
 
 sealed class AuthEvent extends Equatable {
@@ -24,11 +25,13 @@ class SignInEvent extends AuthEvent {
   final String name;
   final String email;
   final String passwrod;
+  final Uint8List? profileImage;
 
   const SignInEvent({
     required this.name,
     required this.email,
     required this.passwrod,
+    this.profileImage,
   });
 
   @override
